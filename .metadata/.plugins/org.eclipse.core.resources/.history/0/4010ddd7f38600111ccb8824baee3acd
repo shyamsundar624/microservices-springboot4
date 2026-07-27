@@ -1,0 +1,8 @@
+package com.shyam.micro.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(name = "CARTSERVICE")
+public interface CartClient {
+
+}

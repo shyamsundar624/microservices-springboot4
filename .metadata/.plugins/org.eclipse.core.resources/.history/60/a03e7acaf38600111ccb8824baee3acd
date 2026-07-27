@@ -1,0 +1,5 @@
+package com.shyam.micro.client;
+
+public interface CartClient {
+
+}

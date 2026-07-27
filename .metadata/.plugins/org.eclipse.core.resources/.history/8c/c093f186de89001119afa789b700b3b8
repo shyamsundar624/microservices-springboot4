@@ -1,0 +1,5 @@
+package com.shyam.micro.config;
+
+public class WebClientConfig {
+
+}

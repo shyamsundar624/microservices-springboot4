@@ -1,0 +1,62 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+          trusted-proxies: ".*"
+          routes:
+            - id: CartService-route
+              uri: lb://CartService
+              predicates:
+                - Path=/cart/**
+              filters:
+                - AddRequestHeader=X-Source, api-gateway
+
+            - id: UserService-route
+              uri: lb://UserService
+              predicates:
+                - Path=/user/**
+              filters:
+                - AddRequestHeader=X-Source, api-gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    webclient:
+      enabled: true
+    # ✅ These two lines force Eureka client to use localhost
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    # ✅ These four lines fix the LAPTOP-ILC5ID8Q.mshome.net hostname problem
+    prefer-ip-address: true
+    hostname: localhost
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      enabled: true
+    health:
+      show-details: always
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    com.netflix.discovery: DEBUG

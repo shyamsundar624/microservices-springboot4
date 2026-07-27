@@ -1,0 +1,5 @@
+package com.shyam.micro.controller;
+
+public class UserController {
+
+}
